@@ -1,0 +1,36 @@
+import uiautomator2 as ui2
+import time
+
+# Device serial number
+device_serial = "192.168.2.185:5555"
+
+# Create a Device object for the device
+receiver_device = ui2.Device(device_serial)
+time.sleep(2)
+receiver_device(text="YouTube").click()
+time.sleep(2)
+receiver_device.click(0.46, 0.722)
+time.sleep(4)
+
+# Get the screen dimensions
+screen_width = receiver_device.info["displayWidth"]
+screen_height = receiver_device.info["displayHeight"]
+
+# Define the number of swipes you want to perform
+num_swipes = 5
+
+# Loop to perform the swipe action multiple times
+for _ in range(num_swipes):
+    # Swipe a little more to open the notification shade
+    receiver_device.swipe(screen_width // 2, 0, screen_width // 2, screen_height * 3 // 4)
+    
+    # Wait for a moment before the next swipe (adjust as needed)
+    time.sleep(1)
+
+
+time.sleep(1)  # Adjust the delay between swipes if necessary
+receiver_device(resourceId="com.android.systemui:id/tile_label", text="Background stream").click()
+time.sleep(2)
+receiver_device(resourceId="com.android.systemui:id/center_group").click()
+time.sleep(2)
+receiver_device(resourceId="com.android.systemui:id/recent_apps").click()
