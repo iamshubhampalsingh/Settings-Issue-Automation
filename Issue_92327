@@ -1,0 +1,32 @@
+#issue no=92327
+
+import time
+import subprocess
+import uiautomator2 as ui2
+
+
+
+receiver_device_serial = "192.168.2.102:5555"
+receiver_device = ui2.Device(receiver_device_serial)
+
+# Connect to the Android device
+receiver_device_serial = "192.168.2.102:5555"
+receiver_device = ui2.Device(receiver_device_serial)
+
+# Find the element using UIAutomator
+element = receiver_device(resourceId="com.android.systemui:id/lock_icon_view")
+
+# Get the bounding rectangle of the element
+bounds = element.info['bounds']
+
+# Extract the coordinates
+x = bounds['left']
+y = bounds['top']
+
+# Print the coordinates
+print(f"Element location: ({x}, {y})")
+if y < 1100:
+    print("Finger print or face lock top of srreen")
+else:
+    print("finger print face lock is at its safe position")
+
