@@ -1,0 +1,37 @@
+'''
+[Precondition]:
+DUT should be flashed with latest build version
+
+[Steps to reproduce]:
+Unlock the device >Open any apps in recent >Tap on recent button> Observe
+
+[Actual Result]:
+Screenshot option is appearing instead of Clear all option.
+
+[Expected Result]:
+Clear All option should be there in place of screen shot option.'''
+
+import uiautomator2 as ui2
+from time import sleep
+
+driver=ui2.Device("192.168.2.16:5555")
+
+# opening photoes and comes back
+driver.xpath('//*[@text="Photos"]').click()
+sleep(2)
+driver.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+sleep(1)
+
+#clicking on on recent button
+driver.xpath('//*[@resource-id="com.android.systemui:id/recent_apps"]').click()
+
+#checking clear all is present or not
+if driver.xpath('//*[@resource-id="com.android.launcher3:id/clean_buttons"]').exists:
+    print('Passed-->Clear all is present')
+    sleep(1)
+else:
+    print('Failed-->Clear all is not present')
+    sleep(1)
+#back button
+driver.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+sleep(1)
