@@ -1,0 +1,70 @@
+'''
+pre-condition:
+1. DUT should be flashed with latest S/w
+
+Steps:
+1.Unlock device > Settings> Sounds > Call volume
+2.observe
+
+Actual result:
+DUT fails to set phone ringtone as call volume sound.
+
+Expected Result:
+DUT must able to set phone ringtone as call volume sound.'''
+
+import uiautomator2 as ui2
+from time import sleep
+
+driver=ui2.Device("192.168.2.16:5555")
+
+#clearing recent open app
+
+driver.xpath("//*[@resource-id='com.android.systemui:id/recent_apps']").click()
+sleep(1)
+if driver.xpath("//*[@resource-id='com.android.launcher3:id/clean_buttons']").exists:
+    driver.xpath("//*[@resource-id='com.android.launcher3:id/clean_buttons']").click()
+    sleep(2)
+else:
+    driver.xpath("//*[@resource-id='com.android.systemui:id/center_group']").click()
+# Get the device screen dimensions
+width, height = driver.info['displayWidth'], driver.info['displayHeight']
+
+# Define starting and ending coordinates for the swipe gesture
+start_x = width // 2  # Swipe starts from the middle of the screen horizontally
+start_y = height * 3 // 4  # Swipe starts from 3/4th down the screen vertically
+end_x = width // 2  # Swipe ends at the middle of the screen horizontally
+end_y = height // 4  # Swipe ends at 1/4th up the screen vertically
+
+# Perform the swipe-up gesture
+driver.swipe(start_x, start_y, end_x, end_y)
+
+#swipe to settings
+driver.swipe(188,406,172,240)
+sleep(1)
+# clicking on settings
+driver(text='Settings').click()
+
+# swipe to sound
+driver.swipe(360,1126,172,240)
+sleep(2)
+#click on sound and vibration
+driver.xpath('//*[@text="Sound and vibration"]').click()
+sleep(1)
+#click on phone to set ringtone
+driver.xpath('//*[@text="Phone"]').click()
+
+#selecting ringtone
+driver.xpath("//*[@resource-id='android:id/select_dialog_listview']/android.widget.RelativeLayout[2]").click()
+sleep(2)
+driver.xpath('//*[@resource-id="android:id/button1"]').click()
+
+#checking wheather ringtone is set or not
+if driver.xpath('//*[@text="Sound_of_Lava"]').exists:
+    print('Failed---> ringtone is not changed')
+else:
+    print('passed-->ringtone is changed')
+
+#back button
+for i in range(5):
+    driver.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+    sleep(2)
