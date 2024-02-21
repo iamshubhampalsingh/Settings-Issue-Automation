@@ -1,0 +1,63 @@
+'''
+Created on 20-Feb-2024
+
+@author: c_rajan1
+'''
+
+import uiautomator2 as ui2
+from time import sleep
+
+
+# Device serial number of the receiver device
+receiver_device_serial ="192.168.2.11:5555"
+
+
+# Create a Device object for the receiver device
+receiver_device = ui2.Device(receiver_device_serial)
+
+# swipe back to the home page 
+
+for i in range(4):
+    receiver_device(resourceId="com.android.systemui:id/back").click()
+    sleep(0.3)
+    
+# Swipe down to open the notification panel
+
+# receiver_device.open_notification()
+
+receiver_device(resourceId="com.android.systemui:id/center_group").click()
+sleep(2)
+# Define the initial swipe coordinates
+start_x = 500
+start_y = 500
+end_y = 1500
+swipe_duration = 0.2 
+
+# Perform multiple swipes to scroll the screen downwards
+for _ in range(2):
+    receiver_device.swipe(start_x, start_y, start_x, end_y, duration=swipe_duration)
+    sleep(1)  
+
+# Adjust the delay between swipes if necessary
+
+sleep(2)
+
+
+# to check if sound option is present or not 
+
+if receiver_device(resourceId="com.android.systemui:id/tile_label", text="Sound").exists():
+    
+    print("Sound icon is present")
+else:
+    print("Sound icon is not present")
+    
+sleep(2)   
+
+receiver_device.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+sleep(1)
+receiver_device.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+sleep(1)
+receiver_device.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+sleep(1)
+receiver_device.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+sleep(1)
