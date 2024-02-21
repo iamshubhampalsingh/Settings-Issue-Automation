@@ -1,0 +1,52 @@
+'''
+Precondition
+1.Device should be flashed with latest SW.
+2.SIM card should be inserted.
+
+Step to reproduce:-
+1:-Long tap on empty space on home screen.
+2:-Open Home settings.
+3:-Observe
+
+Actual Result:-
+Multiple options are missing in Home settings.
+
+Expected Result:-
+All options should be there as mentioned in attached image.'''
+
+import uiautomator2 as ui2
+from time import sleep
+
+
+
+# creating object for device
+driver=ui2.Device("192.168.2.54:5555")
+# Lonag tap on Home screen 
+driver.xpath('//*[@resource-id="com.android.launcher3:id/workspace"]/android.view.ViewGroup[1]/android.view.ViewGroup[1]').long_click()
+sleep(1)
+# tap on Home Setting option
+driver.xpath('//*[@resource-id="com.android.launcher3:id/popup_container"]/android.widget.FrameLayout[3]').click()
+sleep(1)
+# scrolling 
+driver.swipe(72,2032,286,77)
+sleep(2)
+# Verifying the other option in Home Settings 
+Cust_App_Name=driver.xpath('//*[@text="Customize App Name"]')
+Layout_Lock=driver.xpath('//*[@text="Layout Lock"]')
+Docked_App=driver.xpath('//*[@text="Docked App"]')
+sleep(2)
+if Cust_App_Name.exists and Layout_Lock.exists and Docked_App.exists:
+    print("All the other option present in home settngs")
+elif Cust_App_Name.exists:
+    print('Customize App name is present')
+elif Layout_Lock.exists:
+    print('Layout Lock is present')
+elif Docked_App.exists:
+    print('Docked app is present')
+else:
+    print('Failed ---> Other options are not present in home settings')
+
+# Clicking back button
+for i in range(4):    
+    driver.xpath('//*[@resource-id="com.android.systemui:id/back"]').click()
+    sleep(1)
