@@ -1,0 +1,41 @@
+'''
+Pre-condition:
+1. DUT should be flashed with latest build version.
+2. Fingerprint should be enabled
+3. device should be locked with facelock or fingerprint
+
+Steps to reproduce:
+1. Enable fingerprint from settings
+2. Lock the screen
+3. Turn on the screen and observe
+4. Now do same with Face lock
+
+Error:
+[Side Effect] Fingerprint and face lock icon coming on top of screen
+
+Expected result:
+Icon should be present at bottom of screen'''
+
+import uiautomator2 as ui2
+from time import sleep
+
+driver=ui2.Device("192.168.2.16:5555")
+
+# get the postion of fingreprit icon
+face_icon=driver(resourceId='com.android.systemui:id/lock_icon_view')
+
+# get boundaries of face_icon
+Bound=face_icon.info["bounds"]
+
+
+# Extract the position from the bounds
+left=Bound['left']
+top=Bound['right']
+right=Bound['right']
+bottom = Bound['bottom']
+
+# checking the position of  fingerprint icon postion on locked screen
+if 1000<bottom<1400:
+    print("Passed--> Icon is at bottom of screen")
+else:
+    print('Failed-->Icon is not at the bottom of screen')
