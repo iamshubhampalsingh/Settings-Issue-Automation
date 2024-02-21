@@ -1,0 +1,47 @@
+import uiautomator2 as ui2
+from time import sleep
+
+# Device serial number of the receiver device
+receiver_device_serial = "192.168.2.11:5555"
+
+
+#precondition network speed toggle should be off 
+
+# Create a Device object for the receiver device
+receiver_device = ui2.Device(receiver_device_serial)
+
+# Swipe back to the home page
+receiver_device.press("home")
+
+# Open settings
+receiver_device.app_start("com.android.settings")
+sleep(2)
+
+# Click on Display
+receiver_device.xpath('//*[@text="Display"]').click()
+sleep(1)
+
+# Scroll down to Network speed
+receiver_device.swipe(60, 1137, 216, 43)
+sleep(2)
+
+# Find the element corresponding to the Network speed toggle
+try:
+    network_speed_toggle = receiver_device.xpath('//*[@text="Network speed"]')
+    if network_speed_toggle.exists:
+        # Print the attributes of the element
+        print("Attributes of network speed toggle:", network_speed_toggle.info)
+        receiver_device.xpath('//*[@text="Network speed"]').click()
+    else:
+        print("Network speed toggle element not found")
+except Exception as e:
+    print("An error occurred:", str(e))
+
+for i in range(4):
+    receiver_device(resourceId="com.android.systemui:id/back").click()
+    sleep(0.3)
+
+if receiver_device.xpath('//*[@resource-id="com.android.systemui:id/network_speed_prize"]').exists:
+    print("The network speed is shown at top")
+else:
+    print("The network speed is  not shown at top")
